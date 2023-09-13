@@ -1,51 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(ProfileApp());
-}
-
-class ProfileApp extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ProfilePage(),
-    );
-  }
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class UserProfile {
-  String pseudo;
-  String mail;
-  int num;
-  int age;
-
-  UserProfile(
-      {required this.pseudo,
-      required this.mail,
-      required this.num,
-      required this.age});
-}
-
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profil'),
-      ),
-      body: Center(
-        child: Text('Page de profil'),
-      ),
-    );
-  }
-}
-
-class EditProfilePage extends StatefulWidget {
-  @override
-  _EditProfilePageState createState() => _EditProfilePageState();
-}
-
-class _EditProfilePageState extends State<EditProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   UserProfile userProfile = UserProfile(
     pseudo: "Utilisateur",
     mail: "utilisateur@example.com",
@@ -80,7 +40,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             onPressed: () {
               setState(() {
                 if (isEditing) {
-                  // Enregistrez les modifications ici
+                  
                   userProfile.pseudo = pseudoController.text;
                   userProfile.mail = mailController.text;
                   userProfile.num = int.parse(numController.text);
@@ -127,4 +87,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
+}
+
+class UserProfile {
+  String pseudo;
+  String mail;
+  int num;
+  int age;
+
+  UserProfile(
+      {required this.pseudo,
+      required this.mail,
+      required this.num,
+      required this.age});
 }

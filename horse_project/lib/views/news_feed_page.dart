@@ -9,7 +9,6 @@ class NewsFeedPage extends StatelessWidget {
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
-              // Naviguez vers la page sélectionnée ici
               Navigator.pushNamed(context, value);
             },
             itemBuilder: (BuildContext context) {

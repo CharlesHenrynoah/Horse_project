@@ -6,7 +6,7 @@ import 'package:horse_project/views/calendar_page.dart';
 import 'package:horse_project/views/course_programming_page.dart';
 import 'package:horse_project/views/horse_list_page.dart';
 import 'package:horse_project/views/evening_proposal_page.dart';
-import 'package:horse_project/views/profile_page.dart'; // Assurez-vous d'importer le fichier de la page de profil.
+import 'package:horse_project/views/profile_page.dart';
 
 void main() {
   runApp(MyApp());
