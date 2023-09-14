@@ -8,6 +8,8 @@ import 'package:horse_project/views/course_programming_page.dart';
 import 'package:horse_project/views/horse_list_page.dart';
 import 'package:horse_project/views/evening_proposal_page.dart';
 import 'package:horse_project/views/profile_page.dart';
+import 'package:horse_project/views/login_page.dart'; // Import LoginPage
+import 'package:horse_project/views/signup_page.dart'; // Import SignupPage
 
 void main() {
   runApp(MyApp());
@@ -23,8 +25,8 @@ class MyApp extends StatelessWidget {
       ),
       home: NewsFeedPage(),
       routes: {
-        '/login': (context) => _LoginPageState(),
-        '/signup': (context) => _SignupPageState(),
+        '/login': (context) => LoginPage(), // Corrected to LoginPage
+        '/signup': (context) => SignupPage(), // Corrected to SignupPage
         '/calendar': (context) => CalendarPage(),
         '/course_programming': (context) => CourseProgrammingPage(),
         '/horse_list': (context) => HorseListPage(),
