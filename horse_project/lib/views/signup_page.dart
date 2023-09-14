@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:horse_project/controllers/user_controller.dart'; // Import UserController
@@ -36,10 +37,15 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
+=======
+
+class SignupPage extends StatelessWidget {
+>>>>>>> origin/profil
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
         title: Text('Inscription'),
       ),
       body: Form(
@@ -228,11 +234,20 @@ class _SignupPageState extends State<SignupPage> {
             ),
           ],
         ),
+=======
+        title: Text('Sign Up'),
+      ),
+      body: Center(
+        child: Text('Sign Up Page'),
+>>>>>>> origin/profil
       ),
     );
   }
 }
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> origin/profil
