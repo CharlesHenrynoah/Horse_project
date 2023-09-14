@@ -22,4 +22,27 @@ class UserController {
 
     print('Response received: ${response.data}');
   }
+  Future<bool> login(String? pseudo, String? email, String? hashed_password) async {
+    print('Méthode de connexion appelée avec pseudo: $pseudo, email: $email et mot de passe: $hashed_password');
+
+    // Test if the input is an email
+    var response = await client.from('users').select().eq('email', email).match({
+      'hashed_password': hashed_password,
+    }).execute();
+
+    // If the input is not an email, test if it's a pseudo
+    if (response.data == null || response.data.length == 0) {
+      response = await client.from('users').select().eq('pseudo', pseudo).match({
+        'hashed_password': hashed_password,
+      }).execute();
+    }
+
+    if (response.data != null && response.data.length > 0) {
+      print('Connexion réussie');
+      return true;
+    } else {
+      print('Échec de la connexion');
+      return false;
+    }
+  }
 }
