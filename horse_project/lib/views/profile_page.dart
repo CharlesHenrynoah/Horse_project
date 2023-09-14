@@ -11,12 +11,14 @@ class _ProfilePageState extends State<ProfilePage> {
     mail: "utilisateur@example.com",
     num: 1234567890,
     age: 30,
+    ffeLink: "https://example.com", // Lien FFE par défaut
   );
 
   TextEditingController pseudoController = TextEditingController();
   TextEditingController mailController = TextEditingController();
   TextEditingController numController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+  TextEditingController ffeLinkController = TextEditingController();
 
   bool isEditing = false;
 
@@ -27,6 +29,8 @@ class _ProfilePageState extends State<ProfilePage> {
     mailController.text = userProfile.mail;
     numController.text = userProfile.num.toString();
     ageController.text = userProfile.age.toString();
+    ffeLinkController.text =
+        userProfile.ffeLink; // Utilisation du lien FFE par défaut
   }
 
   @override
@@ -40,11 +44,12 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () {
               setState(() {
                 if (isEditing) {
-                  
                   userProfile.pseudo = pseudoController.text;
                   userProfile.mail = mailController.text;
                   userProfile.num = int.parse(numController.text);
                   userProfile.age = int.parse(ageController.text);
+                  userProfile.ffeLink =
+                      ffeLinkController.text; // Mise à jour du lien FFE
                 }
                 isEditing = !isEditing;
               });
@@ -82,6 +87,13 @@ class _ProfilePageState extends State<ProfilePage> {
               readOnly: !isEditing,
               keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 16),
+            Text("Lien FFE:"),
+            TextFormField(
+              controller: ffeLinkController,
+              readOnly: !isEditing,
+              keyboardType: TextInputType.url,
+            ),
           ],
         ),
       ),
@@ -94,10 +106,12 @@ class UserProfile {
   String mail;
   int num;
   int age;
+  String ffeLink;
 
   UserProfile(
       {required this.pseudo,
       required this.mail,
       required this.num,
-      required this.age});
+      required this.age,
+      required this.ffeLink});
 }
