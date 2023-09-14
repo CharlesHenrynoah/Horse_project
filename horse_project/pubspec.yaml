@@ -30,8 +30,6 @@ environment:
 dependencies:
   flutter:
 
-    assets:
-    - assets/default_profile_image.png
     
     sdk: flutter
 
