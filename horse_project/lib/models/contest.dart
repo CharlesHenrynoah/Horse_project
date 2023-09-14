@@ -1,11 +1,10 @@
 class Contest {
   final String name;
   final String address;
-  final String photoUrl;
   final DateTime date;
   final List<ContestParticipant> participants;
 
-  Contest(this.name, this.address, this.photoUrl, this.date, this.participants);
+  Contest(this.name, this.address, this.date, this.participants);
 }
 
 class ContestParticipant {

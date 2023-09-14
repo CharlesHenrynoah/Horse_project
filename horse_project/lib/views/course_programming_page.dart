@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:horse_project/models/contest.dart';
 import 'package:intl/intl.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CourseProgrammingPage(),
+    );
+  }
+}
+
 class CourseProgrammingPage extends StatefulWidget {
   @override
   _CourseProgrammingPageState createState() => _CourseProgrammingPageState();
@@ -12,7 +25,6 @@ class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
   List<Contest> contests = [];
   TextEditingController _contestNameController = TextEditingController();
   TextEditingController _contestAddressController = TextEditingController();
-  TextEditingController _contestPhotoUrlController = TextEditingController();
   TextEditingController _participantNameController = TextEditingController();
   TextEditingController _dateAndTimeController = TextEditingController();
 
@@ -24,7 +36,7 @@ class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: ListView(
           children: [
             TextFormField(
               controller: _contestNameController,
@@ -33,10 +45,6 @@ class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
             TextFormField(
               controller: _contestAddressController,
               decoration: InputDecoration(labelText: 'Adresse du concours'),
-            ),
-            TextFormField(
-              controller: _contestPhotoUrlController,
-              decoration: InputDecoration(labelText: 'URL de la photo'),
             ),
             TextFormField(
               controller: _dateAndTimeController,
@@ -65,37 +73,57 @@ class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
               onPressed: () {
                 final contestName = _contestNameController.text;
                 final contestAddress = _contestAddressController.text;
-                final contestPhotoUrl = _contestPhotoUrlController.text;
                 final dateAndTime = _dateAndTimeController.text;
                 final participantName = _participantNameController.text;
 
-                // Extract the date and time from the input
-                final dateParts = dateAndTime.split(' ')[0].split('/');
-                final timeParts = dateAndTime.split(' ')[1].split(':');
-                final dateTime = DateTime(
-                  int.parse(dateParts[2]),
-                  int.parse(dateParts[1]),
-                  int.parse(dateParts[0]),
-                  int.parse(timeParts[0]),
-                  int.parse(timeParts[1]),
-                );
+                if (_isValidDateTime(dateAndTime)) {
+                  final dateParts = dateAndTime.split(' ')[0].split('/');
+                  final timeParts = dateAndTime.split(' ')[1].split(':');
+                  final dateTime = DateTime(
+                    int.parse(dateParts[2]),
+                    int.parse(dateParts[1]),
+                    int.parse(dateParts[0]),
+                    int.parse(timeParts[0]),
+                    int.parse(timeParts[1]),
+                  );
 
-                final newContest = Contest(
-                  contestName,
-                  contestAddress,
-                  contestPhotoUrl,
-                  dateTime,
-                  [ContestParticipant(participantName, _selectedLevel)],
-                );
+                  final newContest = Contest(
+                    contestName,
+                    contestAddress,
+                    dateTime,
+                    [ContestParticipant(participantName, _selectedLevel)],
+                  );
 
-                setState(() {
-                  contests.add(newContest);
-                });
+                  setState(() {
+                    contests.add(newContest);
+                  });
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Date mal enregistré'),
+                        content: Text(
+                            'Veuillez entrer une date et une heure valides .'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               child: Text('Créer un concours'),
             ),
-            Expanded(
-              child: ListView.builder(
+            if (contests.isNotEmpty)
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: contests.length,
                 itemBuilder: (context, index) {
                   final contest = contests[index];
@@ -106,10 +134,26 @@ class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
                   );
                 },
               ),
-            ),
           ],
         ),
       ),
     );
+  }
+
+  bool _isValidDateTime(String dateAndTime) {
+    try {
+      final dateParts = dateAndTime.split(' ')[0].split('/');
+      final timeParts = dateAndTime.split(' ')[1].split(':');
+      final dateTime = DateTime(
+        int.parse(dateParts[2]),
+        int.parse(dateParts[1]),
+        int.parse(dateParts[0]),
+        int.parse(timeParts[0]),
+        int.parse(timeParts[1]),
+      );
+      return dateTime.isAfter(DateTime.now());
+    } catch (e) {
+      return false;
+    }
   }
 }
