@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:horse_project/models/contest.dart';
 
 class NewsFeedPage extends StatelessWidget {
+  final List<Contest> contests;
+
+  NewsFeedPage({required this.contests});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +37,38 @@ class NewsFeedPage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text('Contenu de la page principale'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Contenu de la page principale'),
+            if (contests.isNotEmpty)
+              Column(
+                children: contests.map((contest) {
+                  return Card(
+                    margin: EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Nom du concours: ${contest.name}'),
+                          Text('Adresse du concours: ${contest.address}'),
+                          Text('Date du concours: ${contest.date}'),
+                          Text('Participants:'),
+                          Column(
+                            children: contest.participants.map((participant) {
+                              return Text(
+                                  '- ${participant.name} (${participant.level})');
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:horse_project/models/contest.dart';
 import 'package:intl/intl.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: CourseProgrammingPage(),
-    );
-  }
-}
+import 'package:horse_project/models/contest.dart';
 
 class CourseProgrammingPage extends StatefulWidget {
+  final List<Contest> contests;
+
+  CourseProgrammingPage({required this.contests});
+
   @override
   _CourseProgrammingPageState createState() => _CourseProgrammingPageState();
 }
 
 class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
   String _selectedLevel = 'Amateur';
-  List<Contest> contests = [];
   TextEditingController _contestNameController = TextEditingController();
   TextEditingController _contestAddressController = TextEditingController();
   TextEditingController _participantNameController = TextEditingController();
@@ -95,16 +85,16 @@ class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
                   );
 
                   setState(() {
-                    contests.add(newContest);
+                    widget.contests.add(newContest);
                   });
                 } else {
                   showDialog(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Date mal enregistré'),
+                        title: Text('Date mal enregistrée'),
                         content: Text(
-                            'Veuillez entrer une date et une heure valides .'),
+                            'Veuillez entrer une date et une heure valides.'),
                         actions: [
                           TextButton(
                             onPressed: () {
@@ -120,13 +110,13 @@ class _CourseProgrammingPageState extends State<CourseProgrammingPage> {
               },
               child: Text('Créer un concours'),
             ),
-            if (contests.isNotEmpty)
+            if (widget.contests.isNotEmpty)
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: contests.length,
+                itemCount: widget.contests.length,
                 itemBuilder: (context, index) {
-                  final contest = contests[index];
+                  final contest = widget.contests[index];
                   return ListTile(
                     title: Text(contest.name),
                     subtitle: Text(
