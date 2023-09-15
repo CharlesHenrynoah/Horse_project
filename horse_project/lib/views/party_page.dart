@@ -12,29 +12,12 @@ class PartyPage extends StatefulWidget {
 }
 
 class _PartyPageState extends State<PartyPage> {
-  PartyInfo partyInfo = PartyInfo(
-    name = "Soirée",
-    desc = "Ceci est une soirée.",
-  );
+  PartyInfo partyInfo = PartyInfo(name: "Soirée", desc: "Ceci est une soirée.");
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
 
-  void savePartyInfo() {
-    setState(() {
-      // Récupérez les données du formulaire du cheval et créez une instance de HorseInfo
-      final newParty = PartyInfo(
-        name: nameController.text,
-        desc: descController.text,
-      );
-      parties.add(newParty);
-      nameController.text = "";
-      descController.text = "";
-    });
-  }
-
-  List<PartyInfo> parties =
-  [];
+  void savePartyInfo() {}
 
   @override
   Widget build(BuildContext context) {
