@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:horse_project/views/party_page.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -21,8 +22,9 @@ class NewsFeedPage extends StatelessWidget {
               return {
                 '/calendar': 'Calendrier',
                 '/horse_list': 'Liste des Chevaux',
-                '/contest_creation_page': 'contest',
+                '/contest_creation_page': 'Contest',
                 '/profile': 'Profil',
+                '/party_page': 'Party Page', // Ajout de la page "Party Page"
               }
                   .entries
                   .map((e) => PopupMenuItem<String>(

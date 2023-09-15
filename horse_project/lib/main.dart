@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:horse_project/views/news_feed_page.dart';
-import 'package:horse_project/controllers/user_controller.dart'; // Import UserController
-import 'package:horse_project/models/user.dart' as appUser; // Import User model
+import 'package:horse_project/controllers/user_controller.dart';
+import 'package:horse_project/models/user.dart' as appUser;
 import 'package:uuid/uuid.dart';
 import 'package:horse_project/views/calendar_page.dart';
 import 'package:horse_project/views/horse_list_page.dart';
 import 'package:horse_project/views/evening_proposal_page.dart';
 import 'package:horse_project/views/profile_page.dart';
-import 'package:horse_project/views/login_page.dart'; // Import LoginPage
+import 'package:horse_project/views/login_page.dart';
 import 'package:horse_project/views/signup_page.dart';
-import 'package:horse_project/views/contest_creation_page.dart'; // Import SignupPage
+import 'package:horse_project/views/contest_creation_page.dart';
+import 'package:horse_project/views/party_page.dart'; // Importer PartyPage
 
 void main() {
   runApp(MyApp());
@@ -18,7 +19,6 @@ void main() {
 class MyApp extends StatelessWidget {
   final ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,40 +31,37 @@ class MyApp extends StatelessWidget {
         builder: (context, userId, child) {
           if (userId == null) {
             return Builder(
-              // Added Builder
               builder: (context) => Scaffold(
                 appBar: AppBar(
-                  title: Text('Bienvenue Ã  Horse Project'),
+                  title: Text('Bienvenue à Horse Project'),
                 ),
                 body: Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(width: 20), // Add space before buttons
+                      SizedBox(width: 20),
                       ElevatedButton(
-                        child: Text('Connexion',
-                            style: TextStyle(
-                                fontSize: 16.0)), // Increase text size
+                        child:
+                            Text('Connexion', style: TextStyle(fontSize: 16.0)),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(16.0), // Increase button size
+                          padding: EdgeInsets.all(16.0),
                         ),
                         onPressed: () {
                           Navigator.pushNamed(context, '/login');
                         },
                       ),
-                      SizedBox(width: 20), // Add space between buttons
+                      SizedBox(width: 20),
                       ElevatedButton(
                         child: Text('Inscription',
-                            style: TextStyle(
-                                fontSize: 16.0)), // Increase text size
+                            style: TextStyle(fontSize: 16.0)),
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(16.0), // Increase button size
+                          padding: EdgeInsets.all(16.0),
                         ),
                         onPressed: () {
                           Navigator.pushNamed(context, '/signup');
                         },
                       ),
-                      SizedBox(width: 20), // Add space after buttons
+                      SizedBox(width: 20),
                     ],
                   ),
                 ),
@@ -77,18 +74,18 @@ class MyApp extends StatelessWidget {
         },
       ),
       routes: {
-        '/login': (context) => LoginPage(
-            onLogin: (userId) =>
-                userIdNotifier.value = userId), // Corrected to LoginPage
-        '/signup': (context) => SignupPage(), // Corrected to SignupPage
+        '/login': (context) =>
+            LoginPage(onLogin: (userId) => userIdNotifier.value = userId),
+        '/signup': (context) => SignupPage(),
         '/calendar': (context) => CalendarPage(),
         '/horse_list': (context) => HorseListPage(),
         '/contest_creation_page': (context) => ContestCreationPage(),
         '/profile': (context) => ProfilePage(),
-        '/news_feed': (context) => NewsFeedPage(), // Add this line
+        '/news_feed': (context) => NewsFeedPage(),
+        '/party_page': (context) =>
+            PartyPage(), // Ajout de la route vers la page "Party Page"
       },
       onUnknownRoute: (settings) {
-        // Handle unknown routes
         return MaterialPageRoute(
             builder: (context) =>
                 LoginPage(onLogin: (userId) => userIdNotifier.value = userId));
