@@ -33,6 +33,9 @@ class _PartyPageState extends State<PartyPage> {
     });
   }
 
+  List<PartyInfo> parties =
+  [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
