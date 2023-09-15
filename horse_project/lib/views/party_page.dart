@@ -12,7 +12,7 @@ class PartyPage extends StatefulWidget {
 }
 
 class _PartyPageState extends State<PartyPage> {
-  PartyPage partyPage = partyInfo(
+  PartyPage partyPage = PartyInfo(
     name = "Soirée",
     desc = "Ceci est une soirée."
   );
