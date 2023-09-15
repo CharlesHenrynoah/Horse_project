@@ -39,6 +39,16 @@ class _PartyPageState extends State<PartyPage> {
               TextFormField(
                 controller: descController,
               ),
+              Container(
+                color: Colors.blue,
+                height: 300,
+                child: Center(
+                  child: Text(
+                    'Drag and drop your files here',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
