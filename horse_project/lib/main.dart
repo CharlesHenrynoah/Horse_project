@@ -16,6 +16,9 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final ValueNotifier<String?> userIdNotifier = ValueNotifier<String?>(null);
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,15 +26,63 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: NewsFeedPage(),
+      home: ValueListenableBuilder<String?>(
+        valueListenable: userIdNotifier,
+        builder: (context, userId, child) {
+          if (userId == null) {
+            return Builder( // Added Builder
+              builder: (context) => Scaffold(
+                appBar: AppBar(
+                  title: Text('Bienvenue à Horse Project'),
+                ),
+                body: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(width: 20), // Add space before buttons
+                      ElevatedButton(
+                        child: Text('Connexion', style: TextStyle(fontSize: 16.0)), // Increase text size
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(16.0), // Increase button size
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                      ),
+                      SizedBox(width: 20), // Add space between buttons
+                      ElevatedButton(
+                        child: Text('Inscription', style: TextStyle(fontSize: 16.0)), // Increase text size
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(16.0), // Increase button size
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/signup');
+                        },
+                      ),
+                      SizedBox(width: 20), // Add space after buttons
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return LoginPage(onLogin: (userId) => userIdNotifier.value = userId);
+          }
+        },
+      ),
       routes: {
-        '/login': (context) => LoginPage(), // Corrected to LoginPage
+        '/login': (context) => LoginPage(onLogin: (userId) => userIdNotifier.value = userId), // Corrected to LoginPage
         '/signup': (context) => SignupPage(), // Corrected to SignupPage
         '/calendar': (context) => CalendarPage(),
         '/course_programming': (context) => CourseProgrammingPage(),
         '/horse_list': (context) => HorseListPage(),
         '/evening_proposal': (context) => EveningProposalPage(),
         '/profile': (context) => ProfilePage(),
+        '/news_feed': (context) => NewsFeedPage(), // Add this line
+      },
+      onUnknownRoute: (settings) {
+        // Handle unknown routes
+        return MaterialPageRoute(builder: (context) => LoginPage(onLogin: (userId) => userIdNotifier.value = userId));
       },
     );
   }

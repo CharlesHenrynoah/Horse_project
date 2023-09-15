@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:horse_project/models/user.dart';
+import 'package:horse_project/models/user.dart' as appUser;
 import 'package:horse_project/models/horse.dart';
 import 'package:image_picker/image_picker.dart'; // Import ImagePicker
+import 'package:horse_project/controllers/user_controller.dart'; // Import UserController
 
 void main() {
   runApp(MaterialApp(
@@ -16,13 +17,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  User user = User(
-    pseudo: "Utilisateur",
-    email: "utilisateur@example.com",
-    phonenumber: "1234567890",
-    ffelink: "https://example.com", // Default FFE link
-    horses: [],
-  );
+  final UserController userController = UserController(); // Instantiate the UserController
+  appUser.User? user; // Initialize user as nullable
 
   TextEditingController pseudoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -60,11 +56,17 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    pseudoController.text = user.pseudo ?? '';
-    emailController.text = user.email ?? '';
-    phonenumberController.text = user.phonenumber ?? '';
-    ffelinkController.text = user.ffelink ?? ''; // Use the default FFE link
-    passwordController.text = user.hashed_password ?? ''; // Initialize password controller
+    // Fetch user profile from the controller
+    userController.getUserProfile('userId').then((fetchedUser) {
+      setState(() {
+        user = fetchedUser;
+        pseudoController.text = user?.pseudo ?? '';
+        emailController.text = user?.email ?? '';
+        phonenumberController.text = user?.phonenumber ?? '';
+        ffelinkController.text = user?.ffelink ?? ''; // Use the default FFE link
+        passwordController.text = user?.hashed_password ?? ''; // Initialize password controller
+      });
+    });
   }
 
   void toggleHorseForm() {
@@ -122,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        user.photo = pickedFile.path;
+        user?.photo = pickedFile.path;
       });
     }
   }
@@ -138,11 +140,11 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () {
               setState(() {
                 if (isEditing) {
-                  user.pseudo = pseudoController.text;
-                  user.email = emailController.text;
-                  user.phonenumber = phonenumberController.text;
-                  user.ffelink = ffelinkController.text; // Update the FFE link
-                  user.hashed_password = passwordController.text; // Update password
+                  user?.pseudo = pseudoController.text;
+                  user?.email = emailController.text;
+                  user?.phonenumber = phonenumberController.text;
+                  user?.ffelink = ffelinkController.text; // Update the FFE link
+                  user?.hashed_password = passwordController.text; // Update password
                 }
                 isEditing = !isEditing;
               });
@@ -167,7 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.blue,
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: FileImage(File(user.photo ?? '')),
+                          image: FileImage(File(user?.photo ?? '')),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -345,4 +347,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+
+
+
+
 
