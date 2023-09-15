@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:horse_project/controllers/user_controller.dart'; // Import UserController
-import 'package:horse_project/models/user.dart' as appUser; // Import User model
+import 'package:horse_project/controllers/user_controller.dart'; 
+import 'package:horse_project/models/user.dart' as appUser; 
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
@@ -17,15 +17,15 @@ class _SignupPageState extends State<SignupPage> {
   String? _username;
   String? _email;
   String? _hashed_password;
-  String? _confirm_password; // Add a variable to store the confirm password
+  String? _confirm_password; 
   String? _pseudo;
   String? _photo;
   String? _phonenumber;
   String? _ffelink;
-  bool? _isadmin; // Add a variable to store the admin status
+  bool? _isadmin; 
   File? _imageFile;
-  final _userController = UserController(); // Initialize UserController
-  String? _phoneCode; // Add a variable to store the phone code
+  final _userController = UserController();
+  String? _phoneCode; 
 
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -48,11 +48,11 @@ class _SignupPageState extends State<SignupPage> {
           padding: EdgeInsets.all(16.0),
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: 'Pseudo *'), // Added required field indicator
-              maxLength: 10, // Add a maximum length
-              validator: (value) { // Added validator
+              decoration: InputDecoration(labelText: 'Pseudo *'), 
+              maxLength: 10, 
+              validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Obligatoire'; // Return error message
+                  return 'Obligatoire'; 
                 }
                 return null;
               },
@@ -77,16 +77,14 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Mot de passe *'), // Added required field indicator
-              obscureText: true, // Change to true
-              validator: (value) { // Added validator
+              decoration: InputDecoration(labelText: 'Mot de passe *'), 
+              obscureText: true, 
+              validator: (value) { 
                 if (value == null || value.isEmpty) {
-                  return 'Obligatoire'; // Return error message
+                  return 'Obligatoire'; 
                 }
-                // Check if the password meets the requirements
                 if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$').hasMatch(value)) {
-                  return 'Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial'; // Return error message
-                }
+                  return 'Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial'; 
                 return null;
               },
               onSaved: (value) {
@@ -94,11 +92,11 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Confirmation du mot de passe *'), // Added required field indicator
-              obscureText: true, // Change to true
-              validator: (value) { // Added validator
+              decoration: InputDecoration(labelText: 'Confirmation du mot de passe *'),
+              obscureText: true, 
+              validator: (value) { 
                 if (value == null || value.isEmpty) {
-                  return 'Obligatoire'; // Return error message
+                  return 'Obligatoire'; 
                 }
                 return null;
               },
@@ -116,16 +114,16 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             DropdownButtonFormField(
-              hint: Text("Indicatif téléphonique *"), // Added required field indicator
+              hint: Text("Indicatif téléphonique *"), 
               items: ["France +33", "USA +1", "UK +44", "Germany +49", "Spain +34"].map((code) { // Added more country codes
                 return DropdownMenuItem(
                   value: code,
                   child: Text(code),
                 );
               }).toList(),
-              validator: (value) { // Added validator
+              validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Obligatoire'; // Return error message
+                  return 'Obligatoire'; 
                 }
                 return null;
               },
@@ -139,10 +137,10 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Numéro de téléphone *'), // Added required field indicator
-              validator: (value) { // Added validator
+              decoration: InputDecoration(labelText: 'Numéro de téléphone *'), 
+              validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Obligatoire'; // Return error message
+                  return 'Obligatoire'; 
                 }
                 return null;
               },
@@ -151,16 +149,16 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             DropdownButtonFormField(
-              hint: Text("Sélectionnez le rôle *"), // Added required field indicator
+              hint: Text("Sélectionnez le rôle *"),
               items: ["Administrateur", "Cavalier"].map((role) {
                 return DropdownMenuItem(
                   value: role == "Administrateur",
                   child: Text(role),
                 );
               }).toList(),
-              validator: (value) { // Added validator
+              validator: (value) { 
                 if (value == null) {
-                  return 'Obligatoire'; // Return error message
+                  return 'Obligatoire';
                 }
                 return null;
               },
@@ -174,10 +172,10 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Lien FFE *'), // Added required field indicator
-              validator: (value) { // Added validator
+              decoration: InputDecoration(labelText: 'Lien FFE *'), 
+              validator: (value) { 
                 if (value == null || value.isEmpty) {
-                  return 'Obligatoire'; // Return error message
+                  return 'Obligatoire'; 
                 }
                 return null;
               },
@@ -191,20 +189,20 @@ class _SignupPageState extends State<SignupPage> {
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
                   _formKey.currentState?.save();
-                  // Create a new User object with the saved form data
+                  
                   final user = appUser.User(
-                    id: uuid.v4(), // Generate a unique id
-                    username: _username ?? '', // Use null safety
-                    email: _email ?? '', // Use null safety
-                    hashed_password: _hashed_password ?? '', // Use null safety
-                    pseudo: _pseudo ?? '', // Use null safety
-                    photo: _photo ?? '', // Use null safety
-                    phonenumber: _phonenumber ?? '', // Use null safety
-                    ffelink: _ffelink ?? '', // Use null safety
-                    isadmin: _isadmin ?? false, // Use the value from the form
-                    horses: [], // Add a default value
+                    id: uuid.v4(), 
+                    username: _username ?? '',
+                    email: _email ?? '',
+                    hashed_password: _hashed_password ?? '', 
+                    pseudo: _pseudo ?? '',
+                    photo: _photo ?? '', 
+                    phonenumber: _phonenumber ?? '', 
+                    ffelink: _ffelink ?? '',
+                    isadmin: _isadmin ?? false, 
+                    horses: [],
                   );
-                  // Call the signup method in UserController
+               
                   _userController.signup(user);
                   showDialog(
                     context: context,

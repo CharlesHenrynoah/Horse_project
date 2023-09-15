@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:horse_project/views/contest_creation_page.dart'; // Import ContestCreationPage
-
+import 'package:horse_project/views/contest_creation_page.dart'; 
 void main() {
   runApp(MaterialApp(
     home: ContestCreationPage(contests: []),
@@ -17,7 +16,7 @@ class NewsFeedPage extends StatelessWidget {
           PopupMenuButton<String>(
             onSelected: (value) {
               if (value == '/course_programming') {
-                Navigator.pushNamed(context, '/contest_creation'); // Redirect to '/contest_creation' instead of '/news_feed'
+                Navigator.pushNamed(context, '/contest_creation'); 
               } else {
                 Navigator.pushNamed(context, value);
               }
