@@ -17,14 +17,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final UserController userController = UserController(); // Instantiate the UserController
+  final UserController userController =
+      UserController(); // Instantiate the UserController
   appUser.User? user; // Initialize user as nullable
 
   TextEditingController pseudoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phonenumberController = TextEditingController();
   TextEditingController ffelinkController = TextEditingController();
-  TextEditingController passwordController = TextEditingController(); // Controller for password
+  TextEditingController passwordController =
+      TextEditingController(); // Controller for password
 
   bool isEditing = false;
   bool showHorseForm = false;
@@ -45,8 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   List<HorseInfo> horses = []; // List to store each horse's information
 
-  String selectedRole =
-      "Propriétaire"; // By default, the user is an owner
+  String selectedRole = "Propriétaire"; // By default, the user is an owner
   List<String> horseNames = [
     "Cheval 1",
     "Cheval 2",
@@ -63,8 +64,10 @@ class _ProfilePageState extends State<ProfilePage> {
         pseudoController.text = user?.pseudo ?? '';
         emailController.text = user?.email ?? '';
         phonenumberController.text = user?.phonenumber ?? '';
-        ffelinkController.text = user?.ffelink ?? ''; // Use the default FFE link
-        passwordController.text = user?.hashed_password ?? ''; // Initialize password controller
+        ffelinkController.text =
+            user?.ffelink ?? ''; // Use the default FFE link
+        passwordController.text =
+            user?.hashed_password ?? ''; // Initialize password controller
       });
     });
   }
@@ -121,7 +124,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         user?.photo = pickedFile.path;
@@ -144,7 +148,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   user?.email = emailController.text;
                   user?.phonenumber = phonenumberController.text;
                   user?.ffelink = ffelinkController.text; // Update the FFE link
-                  user?.hashed_password = passwordController.text; // Update password
+                  user?.hashed_password =
+                      passwordController.text; // Update password
                 }
                 isEditing = !isEditing;
               });
@@ -156,9 +161,11 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start, // Align the column to the start
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // Align the column to the start
             children: [
-              Center( // Center the photo and edit icon
+              Center(
+                // Center the photo and edit icon
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -347,9 +354,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-
-
-
-
-

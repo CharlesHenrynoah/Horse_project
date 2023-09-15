@@ -28,7 +28,8 @@ class _SignupPageState extends State<SignupPage> {
   String? _phoneCode; // Add a variable to store the phone code
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -48,9 +49,11 @@ class _SignupPageState extends State<SignupPage> {
           padding: EdgeInsets.all(16.0),
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: 'Pseudo *'), // Added required field indicator
+              decoration: InputDecoration(
+                  labelText: 'Pseudo *'), // Added required field indicator
               maxLength: 10, // Add a maximum length
-              validator: (value) { // Added validator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -61,13 +64,16 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Email *'), // Added required field indicator
-              validator: (value) { // Added validator
+              decoration: InputDecoration(
+                  labelText: 'Email *'), // Added required field indicator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
                 // Check if the email is in the correct format
-                if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    .hasMatch(value)) {
                   return 'Entrez une adresse email valide'; // Return error message
                 }
                 return null;
@@ -77,14 +83,19 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Mot de passe *'), // Added required field indicator
+              decoration: InputDecoration(
+                  labelText:
+                      'Mot de passe *'), // Added required field indicator
               obscureText: true, // Change to true
-              validator: (value) { // Added validator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
                 // Check if the password meets the requirements
-                if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$').hasMatch(value)) {
+                if (!RegExp(
+                        r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$')
+                    .hasMatch(value)) {
                   return 'Le mot de passe doit contenir au moins une majuscule, un chiffre et un caractère spécial'; // Return error message
                 }
                 return null;
@@ -94,9 +105,12 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Confirmation du mot de passe *'), // Added required field indicator
+              decoration: InputDecoration(
+                  labelText:
+                      'Confirmation du mot de passe *'), // Added required field indicator
               obscureText: true, // Change to true
-              validator: (value) { // Added validator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -116,14 +130,23 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             DropdownButtonFormField(
-              hint: Text("Indicatif téléphonique *"), // Added required field indicator
-              items: ["France +33", "USA +1", "UK +44", "Germany +49", "Spain +34"].map((code) { // Added more country codes
+              hint: Text(
+                  "Indicatif téléphonique *"), // Added required field indicator
+              items: [
+                "France +33",
+                "USA +1",
+                "UK +44",
+                "Germany +49",
+                "Spain +34"
+              ].map((code) {
+                // Added more country codes
                 return DropdownMenuItem(
                   value: code,
                   child: Text(code),
                 );
               }).toList(),
-              validator: (value) { // Added validator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -139,8 +162,11 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Numéro de téléphone *'), // Added required field indicator
-              validator: (value) { // Added validator
+              decoration: InputDecoration(
+                  labelText:
+                      'Numéro de téléphone *'), // Added required field indicator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -151,14 +177,16 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             DropdownButtonFormField(
-              hint: Text("Sélectionnez le rôle *"), // Added required field indicator
+              hint: Text(
+                  "Sélectionnez le rôle *"), // Added required field indicator
               items: ["Administrateur", "Cavalier"].map((role) {
                 return DropdownMenuItem(
                   value: role == "Administrateur",
                   child: Text(role),
                 );
               }).toList(),
-              validator: (value) { // Added validator
+              validator: (value) {
+                // Added validator
                 if (value == null) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -174,8 +202,10 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Lien FFE *'), // Added required field indicator
-              validator: (value) { // Added validator
+              decoration: InputDecoration(
+                  labelText: 'Lien FFE *'), // Added required field indicator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -232,7 +262,3 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 }
-
-
-
-

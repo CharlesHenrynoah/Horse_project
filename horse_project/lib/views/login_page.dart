@@ -30,8 +30,11 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.all(16.0),
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: 'Pseudo ou Email *'), // Added required field indicator
-              validator: (value) { // Added validator
+              decoration: InputDecoration(
+                  labelText:
+                      'Pseudo ou Email *'), // Added required field indicator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -43,9 +46,12 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Mot de passe *'), // Added required field indicator
+              decoration: InputDecoration(
+                  labelText:
+                      'Mot de passe *'), // Added required field indicator
               obscureText: true, // Change to true
-              validator: (value) { // Added validator
+              validator: (value) {
+                // Added validator
                 if (value == null || value.isEmpty) {
                   return 'Obligatoire'; // Return error message
                 }
@@ -61,11 +67,14 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () async {
                 if (_formKey.currentState?.validate() ?? false) {
                   _formKey.currentState?.save();
-                  var loginResult = await _userController.login(_pseudo, _email, _hashed_password);
+                  var loginResult = await _userController.login(
+                      _pseudo, _email, _hashed_password);
                   if (loginResult) {
-                    var userId = "userId"; // Replace this with the logged in user's ID
+                    var userId =
+                        "userId"; // Replace this with the logged in user's ID
                     widget.onLogin(userId);
-                    Navigator.pushReplacementNamed(context, '/news_feed'); // Redirect to News Feed after successful login
+                    Navigator.pushReplacementNamed(context,
+                        '/news_feed'); // Redirect to News Feed after successful login
                   }
                 }
               },

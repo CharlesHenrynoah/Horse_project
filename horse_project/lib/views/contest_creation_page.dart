@@ -1,12 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:horse_project/models/contest.dart';
+
+void main() {
+  runApp(MaterialApp(
+    initialRoute: '/',
+    routes: {
+      '/': (context) => HomePage(),
+      '/contest_creation_page': (context) => ContestCreationPage(),
+    },
+  ));
+}
+
+class Contest {
+  final String contestName;
+  final String contestAddress;
+  final String dateAndTime;
+  final String selectedLevel;
+
+  Contest(
+    this.contestName,
+    this.contestAddress,
+    this.dateAndTime,
+    this.selectedLevel,
+  );
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/contest_creation_page');
+          },
+          child: Text('Create Contest'),
+        ),
+      ),
+    );
+  }
+}
 
 class ContestCreationPage extends StatefulWidget {
-  final List<Contest> contests;
-
-  ContestCreationPage({required this.contests});
-
   @override
   _ContestCreationPageState createState() => _ContestCreationPageState();
 }
@@ -16,6 +53,7 @@ class _ContestCreationPageState extends State<ContestCreationPage> {
   TextEditingController _contestNameController = TextEditingController();
   TextEditingController _contestAddressController = TextEditingController();
   TextEditingController _dateAndTimeController = TextEditingController();
+  List<Contest> _contestList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -57,86 +95,45 @@ class _ContestCreationPageState extends State<ContestCreationPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final contestName = _contestNameController.text;
-                final contestAddress = _contestAddressController.text;
-                final dateAndTime = _dateAndTimeController.text;
+                // Gérez la création de concours ici
+                Contest newContest = Contest(
+                  _contestNameController.text,
+                  _contestAddressController.text,
+                  _dateAndTimeController.text,
+                  _selectedLevel,
+                );
 
-                if (_isValidDateTime(dateAndTime)) {
-                  final dateParts = dateAndTime.split(' ')[0].split('/');
-                  final timeParts = dateAndTime.split(' ')[1].split(':');
-                  final dateTime = DateTime(
-                    int.parse(dateParts[2]),
-                    int.parse(dateParts[1]),
-                    int.parse(dateParts[0]),
-                    int.parse(timeParts[0]),
-                    int.parse(timeParts[1]),
-                  );
+                setState(() {
+                  _contestList.add(newContest);
+                });
 
-                  final newContest = Contest(
-                    contestName,
-                    contestAddress,
-                    dateTime,
-                  );
-
-                  setState(() {
-                    widget.contests.add(newContest);
-                  });
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Invalid Date'),
-                        content: Text('Please enter a valid date and time.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
+                _contestNameController.clear();
+                _contestAddressController.clear();
+                _dateAndTimeController.clear();
               },
               child: Text('Create Contest'),
             ),
-            if (widget.contests.isNotEmpty)
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: widget.contests.length,
-                itemBuilder: (context, index) {
-                  final contest = widget.contests[index];
-                  return ListTile(
-                    title: Text(contest.contestName),
-                    subtitle: Text(
-                        'Date: ${DateFormat('dd/MM/yyyy HH:mm').format(contest.dateAndTime)}'),
-                  );
-                },
-              ),
+            SizedBox(height: 16.0),
+            Text(
+              'Concours créés :',
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _contestList.map((contest) {
+                return Card(
+                  child: ListTile(
+                    title: Text('Nom : ${contest.contestName}'),
+                    subtitle: Text('Adresse : ${contest.contestAddress}\n'
+                        'Date et heure : ${contest.dateAndTime}\n'
+                        'Niveau : ${contest.selectedLevel}'),
+                  ),
+                );
+              }).toList(),
+            ),
           ],
         ),
       ),
     );
-  }
-
-  bool _isValidDateTime(String dateAndTime) {
-    try {
-      final dateParts = dateAndTime.split(' ')[0].split('/');
-      final timeParts = dateAndTime.split(' ')[1].split(':');
-      final dateTime = DateTime(
-        int.parse(dateParts[2]),
-        int.parse(dateParts[1]),
-        int.parse(dateParts[0]),
-        int.parse(timeParts[0]),
-        int.parse(timeParts[1]),
-      );
-      return dateTime.isAfter(DateTime.now());
-    } catch (e) {
-      return false;
-    }
   }
 }

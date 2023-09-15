@@ -4,13 +4,12 @@ import 'package:horse_project/controllers/user_controller.dart'; // Import UserC
 import 'package:horse_project/models/user.dart' as appUser; // Import User model
 import 'package:uuid/uuid.dart';
 import 'package:horse_project/views/calendar_page.dart';
-import 'package:horse_project/views/contest_creation_page.dart'; // Replace '/course_programming' with '/contest_creation'
 import 'package:horse_project/views/horse_list_page.dart';
 import 'package:horse_project/views/evening_proposal_page.dart';
 import 'package:horse_project/views/profile_page.dart';
 import 'package:horse_project/views/login_page.dart'; // Import LoginPage
-import 'package:horse_project/views/signup_page.dart'; // Import SignupPage
-import 'package:intl/intl.dart';
+import 'package:horse_project/views/signup_page.dart';
+import 'package:horse_project/views/contest_creation_page.dart'; // Import SignupPage
 
 void main() {
   runApp(MyApp());
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
               // Added Builder
               builder: (context) => Scaffold(
                 appBar: AppBar(
-                  title: Text('Bienvenue à Horse Project'),
+                  title: Text('Bienvenue Ã  Horse Project'),
                 ),
                 body: Center(
                   child: Row(
@@ -83,8 +82,6 @@ class MyApp extends StatelessWidget {
                 userIdNotifier.value = userId), // Corrected to LoginPage
         '/signup': (context) => SignupPage(), // Corrected to SignupPage
         '/calendar': (context) => CalendarPage(),
-        '/contest_creation': (context) => ContestCreationPage(
-            contests: []), // Remplace '/course_programming' par '/contest_creation'
         '/horse_list': (context) => HorseListPage(),
         '/contest_creation_page': (context) => ContestCreationPage(),
         '/profile': (context) => ProfilePage(),
