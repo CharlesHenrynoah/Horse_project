@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(MaterialApp(
+    home: NewsFeedPage(),
+  ));
+}
+
 class NewsFeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,8 +19,6 @@ class NewsFeedPage extends StatelessWidget {
             },
             itemBuilder: (BuildContext context) {
               return {
-                '/login': 'Connexion',
-                '/signup': 'Inscription',
                 '/calendar': 'Calendrier',
                 '/course_programming': 'Programmation',
                 '/horse_list': 'Liste des Chevaux',

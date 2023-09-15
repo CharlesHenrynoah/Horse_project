@@ -1,4 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:horse_project/models/user.dart';
+import 'package:horse_project/models/horse.dart';
+import 'package:image_picker/image_picker.dart'; // Import ImagePicker
 
 void main() {
   runApp(MaterialApp(
@@ -12,30 +16,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  UserProfile userProfile = UserProfile(
+  User user = User(
     pseudo: "Utilisateur",
-    mail: "utilisateur@example.com",
-    num: 1234567890,
-    age: 30,
-    ffeLink: "https://example.com", // Lien FFE par défaut
+    email: "utilisateur@example.com",
+    phonenumber: "1234567890",
+    ffelink: "https://example.com", // Default FFE link
+    horses: [],
   );
 
   TextEditingController pseudoController = TextEditingController();
-  TextEditingController mailController = TextEditingController();
-  TextEditingController numController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
-  TextEditingController ffeLinkController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phonenumberController = TextEditingController();
+  TextEditingController ffelinkController = TextEditingController();
+  TextEditingController passwordController = TextEditingController(); // Controller for password
 
   bool isEditing = false;
   bool showHorseForm = false;
 
-  // Contrôleurs pour les champs du formulaire du cheval
+  // Controllers for the horse form fields
   TextEditingController nameController = TextEditingController();
   TextEditingController ageHorseController = TextEditingController();
   TextEditingController robeController = TextEditingController();
   TextEditingController raceController = TextEditingController();
   TextEditingController sexeController = TextEditingController();
-  String? selectedSpecialite; // Spécialité du cheval
+  String? selectedSpecialite; // Horse's specialty
   List<String> specialites = [
     "Dressage",
     "Saut d’obstacle",
@@ -43,32 +47,30 @@ class _ProfilePageState extends State<ProfilePage> {
     "Complet"
   ];
 
-  List<HorseInfo> horses =
-      []; // Liste pour stocker les informations de chaque cheval
+  List<HorseInfo> horses = []; // List to store each horse's information
 
   String selectedRole =
-      "Propriétaire"; // Par défaut, l'utilisateur est propriétaire
+      "Propriétaire"; // By default, the user is an owner
   List<String> horseNames = [
     "Cheval 1",
     "Cheval 2",
     "Cheval 3"
-  ]; // Liste fictive de noms de chevaux
+  ]; // Dummy list of horse names
 
   @override
   void initState() {
     super.initState();
-    pseudoController.text = userProfile.pseudo;
-    mailController.text = userProfile.mail;
-    numController.text = userProfile.num.toString();
-    ageController.text = userProfile.age.toString();
-    ffeLinkController.text =
-        userProfile.ffeLink; // Utilisation du lien FFE par défaut
+    pseudoController.text = user.pseudo ?? '';
+    emailController.text = user.email ?? '';
+    phonenumberController.text = user.phonenumber ?? '';
+    ffelinkController.text = user.ffelink ?? ''; // Use the default FFE link
+    passwordController.text = user.hashed_password ?? ''; // Initialize password controller
   }
 
   void toggleHorseForm() {
     setState(() {
       if (!showHorseForm) {
-        // Le formulaire est fermé, réinitialisez les contrôleurs
+        // The form is closed, reset the controllers
         nameController.text = "";
         ageHorseController.text = "";
         robeController.text = "";
@@ -82,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   void saveHorseInfo() {
     setState(() {
-      // Récupérez les données du formulaire du cheval et créez une instance de HorseInfo
+      // Retrieve the horse form data and create a HorseInfo instance
       final newHorse = HorseInfo(
         name: nameController.text,
         age: int.tryParse(ageHorseController.text) ?? 0,
@@ -91,29 +93,38 @@ class _ProfilePageState extends State<ProfilePage> {
         sexe: sexeController.text,
         specialite: selectedSpecialite,
       );
-      horses.add(newHorse); // Ajoutez le cheval à la liste
-      // Réinitialisez les contrôleurs du formulaire du cheval
+      horses.add(newHorse); // Add the horse to the list
+      // Reset the horse form controllers
       nameController.text = "";
       ageHorseController.text = "";
       robeController.text = "";
       raceController.text = "";
       sexeController.text = "";
       selectedSpecialite = null;
-      showHorseForm = false; // Masquez le formulaire du cheval
+      showHorseForm = false; // Hide the horse form
     });
   }
 
   void cancelHorseForm() {
     setState(() {
-      // Réinitialisez les contrôleurs du formulaire du cheval
+      // Reset the horse form controllers
       nameController.text = "";
       ageHorseController.text = "";
       robeController.text = "";
       raceController.text = "";
       sexeController.text = "";
       selectedSpecialite = null;
-      showHorseForm = false; // Masquez le formulaire du cheval
+      showHorseForm = false; // Hide the horse form
     });
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        user.photo = pickedFile.path;
+      });
+    }
   }
 
   @override
@@ -127,12 +138,11 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () {
               setState(() {
                 if (isEditing) {
-                  userProfile.pseudo = pseudoController.text;
-                  userProfile.mail = mailController.text;
-                  userProfile.num = int.parse(numController.text);
-                  userProfile.age = int.parse(ageController.text);
-                  userProfile.ffeLink =
-                      ffeLinkController.text; // Mise à jour du lien FFE
+                  user.pseudo = pseudoController.text;
+                  user.email = emailController.text;
+                  user.phonenumber = phonenumberController.text;
+                  user.ffelink = ffelinkController.text; // Update the FFE link
+                  user.hashed_password = passwordController.text; // Update password
                 }
                 isEditing = !isEditing;
               });
@@ -144,8 +154,36 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start, // Align the column to the start
             children: [
+              Center( // Center the photo and edit icon
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: FileImage(File(user.photo ?? '')),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                        icon: Icon(Icons.edit, size: 20),
+                        color: Colors.white,
+                        onPressed: _pickImage,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Text("Pseudo:"),
               TextFormField(
                 controller: pseudoController,
@@ -154,29 +192,29 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 16),
               Text("Mail:"),
               TextFormField(
-                controller: mailController,
+                controller: emailController,
                 readOnly: !isEditing,
               ),
               SizedBox(height: 16),
               Text("Numéro:"),
               TextFormField(
-                controller: numController,
-                readOnly: !isEditing,
-                keyboardType: TextInputType.number,
-              ),
-              SizedBox(height: 16),
-              Text("Âge:"),
-              TextFormField(
-                controller: ageController,
+                controller: phonenumberController,
                 readOnly: !isEditing,
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: 16),
               Text("Lien FFE:"),
               TextFormField(
-                controller: ffeLinkController,
+                controller: ffelinkController,
                 readOnly: !isEditing,
                 keyboardType: TextInputType.url,
+              ),
+              SizedBox(height: 16),
+              Text("Mot de passe:"),
+              TextFormField(
+                controller: passwordController,
+                readOnly: !isEditing,
+                obscureText: true,
               ),
               SizedBox(height: 16),
               Text("Rôle:"),
@@ -206,9 +244,9 @@ class _ProfilePageState extends State<ProfilePage> {
               if (selectedRole == "DP")
                 DropdownButton<String>(
                   hint: Text("Sélectionnez un cheval existant"),
-                  value: null, // Vous devez définir la valeur sélectionnée ici
+                  value: null, // You need to set the selected value here
                   onChanged: (value) {
-                    // Vous pouvez ajouter une action pour gérer la sélection du cheval DP ici
+                    // You can add an action to handle the DP horse selection here
                   },
                   items: horseNames.map((horseName) {
                     return DropdownMenuItem<String>(
@@ -224,32 +262,32 @@ class _ProfilePageState extends State<ProfilePage> {
                     Text("Nom du cheval:"),
                     TextFormField(
                       controller:
-                          nameController, // Contrôleur pour le nom du cheval
+                          nameController, // Controller for the horse's name
                     ),
                     SizedBox(height: 16),
                     Text("Âge du cheval:"),
                     TextFormField(
                       controller:
-                          ageHorseController, // Contrôleur pour l'âge du cheval
+                          ageHorseController, // Controller for the horse's age
                       keyboardType: TextInputType.number,
                     ),
                     SizedBox(height: 16),
                     Text("Robe du cheval:"),
                     TextFormField(
                       controller:
-                          robeController, // Contrôleur pour la robe du cheval
+                          robeController, // Controller for the horse's robe
                     ),
                     SizedBox(height: 16),
                     Text("Race du cheval:"),
                     TextFormField(
                       controller:
-                          raceController, // Contrôleur pour la race du cheval
+                          raceController, // Controller for the horse's race
                     ),
                     SizedBox(height: 16),
                     Text("Sexe du cheval:"),
                     TextFormField(
                       controller:
-                          sexeController, // Contrôleur pour le sexe du cheval
+                          sexeController, // Controller for the horse's sex
                     ),
                     SizedBox(height: 16),
                     Text("Spécialité du cheval:"),
@@ -308,36 +346,3 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class UserProfile {
-  String pseudo;
-  String mail;
-  int num;
-  int age;
-  String ffeLink;
-
-  UserProfile({
-    required this.pseudo,
-    required this.mail,
-    required this.num,
-    required this.age,
-    required this.ffeLink,
-  });
-}
-
-class HorseInfo {
-  String name;
-  int age;
-  String robe;
-  String race;
-  String sexe;
-  String? specialite;
-
-  HorseInfo({
-    required this.name,
-    required this.age,
-    required this.robe,
-    required this.race,
-    required this.sexe,
-    this.specialite,
-  });
-}
