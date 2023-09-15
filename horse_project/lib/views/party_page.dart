@@ -35,7 +35,14 @@ class _PartyPageState extends State<PartyPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
+              Text("Nom de la soirée:"),
+              TextFormField(
+                controller: nameController,
+              ),
+              Text("Description:"),
+              TextFormField(
+                controller: descController,
+              ),
             ],
           ),
         ),
