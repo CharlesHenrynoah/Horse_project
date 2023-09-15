@@ -12,7 +12,6 @@ import 'package:horse_project/views/login_page.dart'; // Import LoginPage
 import 'package:horse_project/views/signup_page.dart'; // Import SignupPage
 import 'package:intl/intl.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -32,7 +31,8 @@ class MyApp extends StatelessWidget {
         valueListenable: userIdNotifier,
         builder: (context, userId, child) {
           if (userId == null) {
-            return Builder( // Added Builder
+            return Builder(
+              // Added Builder
               builder: (context) => Scaffold(
                 appBar: AppBar(
                   title: Text('Bienvenue à Horse Project'),
@@ -43,7 +43,9 @@ class MyApp extends StatelessWidget {
                     children: <Widget>[
                       SizedBox(width: 20), // Add space before buttons
                       ElevatedButton(
-                        child: Text('Connexion', style: TextStyle(fontSize: 16.0)), // Increase text size
+                        child: Text('Connexion',
+                            style: TextStyle(
+                                fontSize: 16.0)), // Increase text size
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.all(16.0), // Increase button size
                         ),
@@ -53,7 +55,9 @@ class MyApp extends StatelessWidget {
                       ),
                       SizedBox(width: 20), // Add space between buttons
                       ElevatedButton(
-                        child: Text('Inscription', style: TextStyle(fontSize: 16.0)), // Increase text size
+                        child: Text('Inscription',
+                            style: TextStyle(
+                                fontSize: 16.0)), // Increase text size
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.all(16.0), // Increase button size
                         ),
@@ -68,23 +72,29 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else {
-            return LoginPage(onLogin: (userId) => userIdNotifier.value = userId);
+            return LoginPage(
+                onLogin: (userId) => userIdNotifier.value = userId);
           }
         },
       ),
       routes: {
-        '/login': (context) => LoginPage(onLogin: (userId) => userIdNotifier.value = userId), // Corrected to LoginPage
+        '/login': (context) => LoginPage(
+            onLogin: (userId) =>
+                userIdNotifier.value = userId), // Corrected to LoginPage
         '/signup': (context) => SignupPage(), // Corrected to SignupPage
         '/calendar': (context) => CalendarPage(),
-        '/contest_creation': (context) => ContestCreationPage(contests: []), // Remplace '/course_programming' par '/contest_creation'
+        '/contest_creation': (context) => ContestCreationPage(
+            contests: []), // Remplace '/course_programming' par '/contest_creation'
         '/horse_list': (context) => HorseListPage(),
-        '/evening_proposal': (context) => EveningProposalPage(),
+        '/contest_creation_page': (context) => ContestCreationPage(),
         '/profile': (context) => ProfilePage(),
         '/news_feed': (context) => NewsFeedPage(), // Add this line
       },
       onUnknownRoute: (settings) {
         // Handle unknown routes
-        return MaterialPageRoute(builder: (context) => LoginPage(onLogin: (userId) => userIdNotifier.value = userId));
+        return MaterialPageRoute(
+            builder: (context) =>
+                LoginPage(onLogin: (userId) => userIdNotifier.value = userId));
       },
     );
   }

@@ -2,7 +2,8 @@ import 'package:horse_project/models/user.dart' as appUser;
 import 'package:supabase/supabase.dart';
 
 class UserController {
-  final client = SupabaseClient('https://wfkfgyfeuhsfchzcsqzr.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indma2ZneWZldWhzZmNoemNzcXpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ2NTQ5MTIsImV4cCI6MjAxMDIzMDkxMn0.VbBQ2MwREE9FI-bHolYMw-POpRKz54OFz8AHJKI_wz0'); 
+  final client = SupabaseClient('https://wfkfgyfeuhsfchzcsqzr.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indma2ZneWZldWhzZmNoemNzcXpyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ2NTQ5MTIsImV4cCI6MjAxMDIzMDkxMn0.VbBQ2MwREE9FI-bHolYMw-POpRKz54OFz8AHJKI_wz0');
   appUser.User? user;
 
   Future<void> signup(appUser.User user) async {
@@ -22,17 +23,22 @@ class UserController {
 
     print('Response received: ${response.data}');
   }
-  Future<bool> login(String? pseudo, String? email, String? hashed_password) async {
-    print('Méthode de connexion appelée avec pseudo: $pseudo, email: $email et mot de passe: $hashed_password');
+
+  Future<bool> login(
+      String? pseudo, String? email, String? hashed_password) async {
+    print(
+        'Méthode de connexion appelée avec pseudo: $pseudo, email: $email et mot de passe: $hashed_password');
 
     // Test if the input is an email
-    var response = await client.from('users').select().eq('email', email).match({
+    var response =
+        await client.from('users').select().eq('email', email).match({
       'hashed_password': hashed_password,
     }).execute();
 
     // If the input is not an email, test if it's a pseudo
     if (response.data == null || response.data.length == 0) {
-      response = await client.from('users').select().eq('pseudo', pseudo).match({
+      response =
+          await client.from('users').select().eq('pseudo', pseudo).match({
         'hashed_password': hashed_password,
       }).execute();
     }
@@ -48,7 +54,8 @@ class UserController {
 
   // New method to retrieve user profile information
   Future<appUser.User> getUserProfile(String userId) async {
-    final response = await client.from('users').select().eq('id', userId).execute();
+    final response =
+        await client.from('users').select().eq('id', userId).execute();
     if (response.data != null && response.data.length > 0) {
       final userData = response.data[0];
       return appUser.User(
@@ -67,4 +74,3 @@ class UserController {
     }
   }
 }
-

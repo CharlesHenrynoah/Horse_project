@@ -25,9 +25,8 @@ class NewsFeedPage extends StatelessWidget {
             itemBuilder: (BuildContext context) {
               return {
                 '/calendar': 'Calendrier',
-                '/course_programming': 'Programmation',
                 '/horse_list': 'Liste des Chevaux',
-                '/evening_proposal': 'Proposition d\'événement',
+                '/contest_creation_page': 'contest',
                 '/profile': 'Profil',
               }
                   .entries
