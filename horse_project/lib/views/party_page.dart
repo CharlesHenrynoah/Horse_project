@@ -12,14 +12,13 @@ class PartyPage extends StatefulWidget {
 }
 
 class _PartyPageState extends State<PartyPage> {
-  UserProfile userProfile = partyInfo(
+  PartyPage partyPage = partyInfo(
+    name = "Soirée",
+    desc = "Ceci est une soirée."
   );
 
-  TextEditingController pseudoController = TextEditingController();
-  TextEditingController mailController = TextEditingController();
-  TextEditingController numController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
-  TextEditingController ffeLinkController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descController = TextEditingController();
 
   void savePartyInfo() {
   }
