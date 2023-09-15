@@ -12,9 +12,9 @@ class PartyPage extends StatefulWidget {
 }
 
 class _PartyPageState extends State<PartyPage> {
-  PartyPage partyPage = PartyInfo(
+  PartyInfo partyInfo = PartyInfo(
     name = "Soirée",
-    desc = "Ceci est une soirée."
+    desc = "Ceci est une soirée.",
   );
 
   TextEditingController nameController = TextEditingController();
@@ -56,7 +56,7 @@ class PartyInfo {
   String desc;
   //image
 
-  UserProfile({
+  PartyInfo({
     required this.name,
     required this.desc,
   });
