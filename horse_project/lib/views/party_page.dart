@@ -12,12 +12,7 @@ class PartyPage extends StatefulWidget {
 }
 
 class _PartyPageState extends State<PartyPage> {
-  UserProfile userProfile = UserProfile(
-    pseudo: "Utilisateur",
-    mail: "utilisateur@example.com",
-    num: 1234567890,
-    age: 30,
-    ffeLink: "https://example.com", // Lien FFE par défaut
+  UserProfile userProfile = partyInfo(
   );
 
   TextEditingController pseudoController = TextEditingController();
@@ -48,36 +43,13 @@ class _PartyPageState extends State<PartyPage> {
   }
 }
 
-class UserProfile {
-  String pseudo;
-  String mail;
-  int num;
-  int age;
-  String ffeLink;
+class PartyInfo {
+  String name;
+  String desc;
+  //image
 
   UserProfile({
-    required this.pseudo,
-    required this.mail,
-    required this.num,
-    required this.age,
-    required this.ffeLink,
-  });
-}
-
-class HorseInfo {
-  String name;
-  int age;
-  String robe;
-  String race;
-  String sexe;
-  String? specialite;
-
-  HorseInfo({
     required this.name,
-    required this.age,
-    required this.robe,
-    required this.race,
-    required this.sexe,
-    this.specialite,
+    required this.desc,
   });
 }
