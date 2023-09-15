@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CalendarPage extends StatelessWidget {
+class CalendarPage extends StatefulWidget {
+  @override
+  _CalendarPageState createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
   final List<CalendarEvent> events = [
     CalendarEvent(DateTime(2023, 9, 10, 10, 0), "Cours 1", false),
     CalendarEvent(DateTime(2023, 9, 5, 14, 30), "Cours 2", false),
@@ -9,13 +14,29 @@ class CalendarPage extends StatelessWidget {
     CalendarEvent(DateTime(2023, 9, 20, 15, 0), "Cours 5", true),
   ];
 
+  List<Color> cellColors = List.generate(7 * (18 - 9), (_) => Colors.blue);
+  List<String> cellLabels = List.generate(7 * (18 - 9), (_) => "Cours libre");
+
+  void toggleCellColor(int index) {
+    setState(() {
+      if (cellColors[index] == Colors.blue) {
+        cellColors[index] = Colors.red;
+        cellLabels[index] = "Cours";
+      } else {
+        cellColors[index] = Colors.blue;
+        cellLabels[index] = "Cours libre";
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calendar'),
+        title: Text('Emploi du temps'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: EdgeInsets.all(10.0),
@@ -38,7 +59,7 @@ class CalendarPage extends StatelessWidget {
                   color: Colors.blue,
                 ),
                 SizedBox(width: 5),
-                Text('Cours Passés', style: TextStyle(fontSize: 16)),
+                Text('Cours libre', style: TextStyle(fontSize: 16)),
                 SizedBox(width: 20),
                 Container(
                   width: 20,
@@ -51,42 +72,60 @@ class CalendarPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: events.length,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 7, // Nombre de colonnes (jours de la semaine)
+                childAspectRatio: 1.2, // Ratio pour chaque cellule
+              ),
+              itemCount: 7 * (18 - 9), // Nombre de cellules (jours x heures)
               itemBuilder: (context, index) {
-                final event = events[index];
-                final isPastEvent = event.isPast;
-                final cellColor = isPastEvent ? Colors.blue : Colors.red;
+                final day = index % 7;
+                final hour = index ~/ 7 + 9; // Commencer à 9:00
+                final currentDate =
+                    DateTime(2023, 9, 3).add(Duration(days: day, hours: hour));
 
-                return Container(
-                  margin:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
+                // Vérifier si l'heure est dans la plage horaire de 12:00 à 13:00
+                if (hour >= 12 && hour < 13) {
+                  return Container(
+                    margin: EdgeInsets.all(2),
+                    color: Colors.grey, // Couleur pour l'heure de pause
+                  );
+                }
+
+                final isPastEvent = events.any((event) =>
+                    event.dateTime.isAtSameMomentAs(currentDate) &&
+                    event.isPast);
+                final cellColor = isPastEvent ? Colors.blue : cellColors[index];
+                final label = cellLabels[index];
+
+                return GestureDetector(
+                  onTap: () {
+                    toggleCellColor(index);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(2),
                     color: cellColor,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        event.dateTime.hour.toString().padLeft(2, '0') +
-                            ":" +
-                            event.dateTime.minute.toString().padLeft(2, '0'),
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            label,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            '${currentDate.hour.toString().padLeft(2, '0')}:${currentDate.minute.toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 5),
-                      Text(
-                        event.name,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 );
               },
